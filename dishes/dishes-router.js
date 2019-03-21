@@ -16,4 +16,21 @@ router.get("/", (req, res) => {
     })
 })
 
+router.post("/", (req, res) => {
+  const { dish_name } = req.body
+  if (!dish_name) {
+    res.status(400).json({ errorMessage: "Please provide name for the dish." })
+  }
+  dishesDB
+    .addDish({ dish_name: dish_name })
+    .then(dishId => {
+      res.status(201).json(dishId)
+    })
+    .catch(err =>
+      res.status(500).json({
+        error: "There was an error while saving the dish to the database"
+      })
+    )
+})
+
 module.exports = router
