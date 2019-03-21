@@ -17,11 +17,9 @@ router.get("/", (req, res) => {
 router.post("/", (req, res) => {
   const { title, dish_id } = req.body
   if (!title || !dish_id)
-    res
-      .status(400)
-      .json({
-        errorMessage: "Please provide a title and a dish id for the dish."
-      })
+    res.status(400).json({
+      errorMessage: "Please provide a title and a dish id for the dish."
+    })
   else {
     recipesDB
       .addRecipe(req.body)
@@ -32,6 +30,24 @@ router.post("/", (req, res) => {
         })
       )
   }
+})
+
+router.get("/:id", (req, res) => {
+  const { id } = req.params
+  recipesDB
+    .getRecipe(id)
+    .then(recipe => {
+      if (recipe) res.status(200).json(recipe)
+      else
+        res
+          .status(400)
+          .json({ errorMessage: "Please provide a valid recipe id." })
+    })
+    .catch(err =>
+      res
+        .status(500)
+        .json({ error: "The recipe information could not be retrieved." })
+    )
 })
 
 module.exports = router
