@@ -1,7 +1,7 @@
 const express = require("express")
 const router = express.Router()
 
-const dishesDB = require("../data/dishes/dishes_db")
+const dishesDB = require("../../data/dishes/dishes_db")
 
 router.get("/", (req, res) => {
   dishesDB
