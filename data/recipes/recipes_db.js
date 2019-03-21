@@ -3,7 +3,8 @@ const knexConfig = require("../../knexfile.js")
 const db = knex(knexConfig.development)
 
 module.exports = {
-  getRecipes
+  getRecipes,
+  addRecipe
 }
 
 function getRecipes() {
@@ -11,4 +12,10 @@ function getRecipes() {
     .select("recipes.id", "recipes.title", "dishes.dish_name")
     .from("recipes")
     .innerJoin("dishes", "dishes.id", "recipes.dish_id")
+}
+
+function addRecipe(recipe) {
+  return db("recipes")
+    .insert(recipe)
+    .then(ids => ({ id: ids[0] }))
 }

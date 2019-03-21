@@ -18,7 +18,8 @@ exports.seed = function(knex, Promise) {
         { ingredient_name: "Egg" },
         { ingredient_name: "Ricotta Cheese" },
         { ingredient_name: "Parmesan Cheese" },
-        { ingredient_name: "Spaghetti" }
+        { ingredient_name: "Spaghetti" },
+        { ingredient_name: "saffron" }
       ])
     })
 }
