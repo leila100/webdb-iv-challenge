@@ -5,7 +5,8 @@ const db = knex(knexConfig.development)
 module.exports = {
   getRecipes,
   addRecipe,
-  getRecipe
+  getRecipe,
+  getShoppingList
 }
 
 function getRecipes() {
@@ -49,4 +50,16 @@ function getRecipe(id) {
         .where({ "ingredientsList.recipe_id": Number(recipe.id) })
         .then(ingredients => ({ recipe: recipe, ingredients: ingredients }))
     })
+}
+
+function getShoppingList(id) {
+  return db
+    .select(
+      "ingredients.ingredient_name",
+      "ingredientsList.qtyValue",
+      "ingredientsList.qtyUnit"
+    )
+    .from("ingredientsList")
+    .innerJoin("ingredients", "ingredients.id", "ingredientsList.ingredient_id")
+    .where({ "ingredientsList.recipe_id": Number(id) })
 }

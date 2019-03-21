@@ -50,4 +50,24 @@ router.get("/:id", (req, res) => {
     )
 })
 
+router.get("/:id/shoppingList", (req, res) => {
+  const { id } = req.params
+  recipesDB
+    .getShoppingList(id)
+    .then(list => {
+      if (list) res.status(200).json(list)
+      else
+        res
+          .status(400)
+          .json({ errorMessage: "Please provide a valid recipe id." })
+    })
+    .catch(err =>
+      res
+        .status(500)
+        .json({
+          error: "The shopping list information could not be retrieved."
+        })
+    )
+})
+
 module.exports = router
