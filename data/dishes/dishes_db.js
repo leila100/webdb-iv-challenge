@@ -6,7 +6,8 @@ module.exports = {
   getDishes,
   addDish,
   getDish,
-  remove
+  remove,
+  update
 }
 
 function getDishes() {
@@ -37,4 +38,10 @@ function remove(id) {
   return db("dishes")
     .where({ id: Number(id) })
     .del()
+}
+
+function update(id, dish) {
+  return db("dishes")
+    .where({ id: Number(id) })
+    .update(dish)
 }

@@ -18,14 +18,15 @@ router.post("/", (req, res) => {
   const { dish_name } = req.body
   if (!dish_name)
     res.status(400).json({ errorMessage: "Please provide name for the dish." })
-  dishesDB
-    .addDish({ dish_name: dish_name })
-    .then(dishId => res.status(201).json(dishId))
-    .catch(err =>
-      res.status(500).json({
-        error: "There was an error while saving the dish to the database"
-      })
-    )
+  else
+    dishesDB
+      .addDish({ dish_name: dish_name })
+      .then(dishId => res.status(201).json(dishId))
+      .catch(err =>
+        res.status(500).json({
+          error: "There was an error while saving the dish to the database"
+        })
+      )
 })
 
 router.get("/:id", (req, res) => {
@@ -58,6 +59,22 @@ router.delete("/:id", (req, res) => {
         .status(500)
         .json({ error: "The dish could not be removed from the database." })
     )
+})
+
+router.put("/:id", (req, res) => {
+  const { id } = req.params
+  const { dish_name } = req.body
+  if (!dish_name)
+    res.status(400).json({ errorMessage: "Please provide name for the dish." })
+  else
+    dishesDB
+      .update(id, { dish_name: dish_name })
+      .then(count => res.status(201).json(count))
+      .catch(err =>
+        res.status(500).json({
+          error: "There was an error while updating the dish in the database"
+        })
+      )
 })
 
 module.exports = router
