@@ -41,4 +41,23 @@ router.get("/:id", (req, res) => {
         .json({ error: "The dish information could not be retrieved." })
     )
 })
+
+router.delete("/:id", (req, res) => {
+  const { id } = req.params
+  dishesDB
+    .remove(id)
+    .then(count => {
+      if (count > 0) res.status(200).json(count)
+      else
+        res
+          .status(400)
+          .json({ errorMessage: "Please provide a valid dish id." })
+    })
+    .catch(err =>
+      res
+        .status(500)
+        .json({ error: "The dish could not be removed from the database." })
+    )
+})
+
 module.exports = router

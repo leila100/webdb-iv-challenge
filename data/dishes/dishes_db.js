@@ -5,7 +5,8 @@ const db = knex(knexConfig.development)
 module.exports = {
   getDishes,
   addDish,
-  getDish
+  getDish,
+  remove
 }
 
 function getDishes() {
@@ -30,4 +31,10 @@ function getDish(id) {
         .where({ dish_id: dish.id })
         .then(recipes => ({ dish: dish, recipes: recipes }))
     })
+}
+
+function remove(id) {
+  return db("dishes")
+    .where({ id: Number(id) })
+    .del()
 }
