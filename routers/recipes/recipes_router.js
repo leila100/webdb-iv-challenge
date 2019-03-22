@@ -80,4 +80,22 @@ router.get("/:id/shoppingList", (req, res) => {
     )
 })
 
+router.delete("/:id", (req, res) => {
+  const { id } = req.params
+  recipesDB
+    .remove(id)
+    .then(count => {
+      if (count > 0) res.status(200).json(count)
+      else
+        res
+          .status(400)
+          .json({ errorMessage: "Please provide a valid recipe id." })
+    })
+    .catch(err =>
+      res
+        .status(500)
+        .json({ error: "The recipe could not be removed from the database." })
+    )
+})
+
 module.exports = router

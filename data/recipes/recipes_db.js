@@ -6,7 +6,8 @@ module.exports = {
   getRecipes,
   addRecipe,
   getRecipe,
-  getShoppingList
+  getShoppingList,
+  remove
 }
 
 function getRecipes() {
@@ -62,4 +63,10 @@ function getShoppingList(id) {
     .from("ingredientsList")
     .innerJoin("ingredients", "ingredients.id", "ingredientsList.ingredient_id")
     .where({ "ingredientsList.recipe_id": Number(id) })
+}
+
+function remove(id) {
+  return db("recipes")
+    .where({ id: Number(id) })
+    .del()
 }
