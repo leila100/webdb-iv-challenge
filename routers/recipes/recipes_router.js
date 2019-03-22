@@ -2,6 +2,7 @@ const express = require("express")
 const router = express.Router()
 
 const recipesDB = require("../../data/recipes/recipes_db")
+const dishesDB = require("../../data/dishes/dishes_db")
 
 router.get("/", (req, res) => {
   recipesDB
@@ -21,12 +22,23 @@ router.post("/", (req, res) => {
       errorMessage: "Please provide a title and a dish id for the dish."
     })
   else {
-    recipesDB
-      .addRecipe(req.body)
-      .then(recipeId => res.status(201).json(recipeId))
+    //check that dish_id is valid
+    dishesDB
+      .getDish(dish_id)
+      .then(dish => {
+        recipesDB
+          .addRecipe(req.body)
+          .then(recipeId => res.status(201).json(recipeId))
+          .catch(err =>
+            res.status(500).json({
+              error:
+                "There was an error while saving the recipe to the database"
+            })
+          )
+      })
       .catch(err =>
-        res.status(500).json({
-          error: "There was an error while saving the recipe to the database"
+        res.status(400).json({
+          errorMessage: "Please provide a valid dish_id"
         })
       )
   }
@@ -62,11 +74,9 @@ router.get("/:id/shoppingList", (req, res) => {
           .json({ errorMessage: "Please provide a valid recipe id." })
     })
     .catch(err =>
-      res
-        .status(500)
-        .json({
-          error: "The shopping list information could not be retrieved."
-        })
+      res.status(500).json({
+        error: "The shopping list information could not be retrieved."
+      })
     )
 })
 
