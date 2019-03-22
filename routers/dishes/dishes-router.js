@@ -34,7 +34,11 @@ router.get("/:id", (req, res) => {
   dishesDB
     .getDish(id)
     .then(dish => {
-      res.status(200).json(dish)
+      if (dish) res.status(200).json(dish)
+      else
+        res.status(400).json({
+          errorMessage: "Please provide a valid id for the dish."
+        })
     })
     .catch(err =>
       res
