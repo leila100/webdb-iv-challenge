@@ -7,7 +7,8 @@ module.exports = {
   addRecipe,
   getRecipe,
   getShoppingList,
-  remove
+  remove,
+  update
 }
 
 function getRecipes() {
@@ -69,4 +70,10 @@ function remove(id) {
   return db("recipes")
     .where({ id: Number(id) })
     .del()
+}
+
+function update(id, recipe) {
+  return db("recipes")
+    .where({ id: Number(id) })
+    .update(recipe)
 }

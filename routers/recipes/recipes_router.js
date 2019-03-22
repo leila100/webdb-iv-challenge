@@ -19,7 +19,7 @@ router.post("/", (req, res) => {
   const { title, dish_id } = req.body
   if (!title || !dish_id)
     res.status(400).json({
-      errorMessage: "Please provide a title and a dish id for the dish."
+      errorMessage: "Please provide a title and a dish id for the recipe."
     })
   else {
     //check that dish_id is valid
@@ -96,6 +96,36 @@ router.delete("/:id", (req, res) => {
         .status(500)
         .json({ error: "The recipe could not be removed from the database." })
     )
+})
+
+router.put("/:id", (req, res) => {
+  const { id } = req.params
+  const { title, dish_id } = req.body
+  if (!title || !dish_id)
+    res.status(400).json({
+      errorMessage: "Please provide a title and a dish id for the recipe."
+    })
+  else {
+    //check that dish_id is valid
+    dishesDB
+      .getDish(dish_id)
+      .then(dish => {
+        recipesDB
+          .update(id, req.body)
+          .then(count => res.status(201).json(count))
+          .catch(err =>
+            res.status(500).json({
+              error:
+                "There was an error while updating the recipe in the database"
+            })
+          )
+      })
+      .catch(err =>
+        res.status(400).json({
+          errorMessage: "Please provide a valid dish_id"
+        })
+      )
+  }
 })
 
 module.exports = router
